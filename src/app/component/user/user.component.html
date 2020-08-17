@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-sm-12 col-md-10 col-xl-9">
+        <input type="text" class="form-control" placeholder="Busqueda" id="filterTable" [(ngModel)]="filtertext">
+    </div>
+    <div class="col-sm-12 col-md-10 col-xl-3">
+        <button type="button" class="btn btn-dark" (click)="open1(content1)"><i class="mdi mdi-plus"></i> Nuevo</button>
+    </div>
+</div>
+<br>
+<table class="table table-responsive table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Nº</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Fecha de nacimiento</th>
+        <th scope="col">Género</th>
+        <th scope="col">Rol</th>
+        <th scope="col">Operaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userService.users | filtertable:filtertext | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i">
+        <th>{{i+1}}</th>
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.age}}</td>
+        <td>{{user.gender}}</td>
+        <td>{{user.rol}}</td>
+        <td>
+            <button type="button" class="btn btn-primary btn-sm"><i class="mdi mdi-pencil"></i> Editar</button>
+            <button type="button" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i> Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="userService.users.length"></ngb-pagination>
+
+
+  <ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Nuevo usuario</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="postForm" (ngSubmit)='postUser()'>
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="name">Nombre completo</label>
+              <input type="text" class="form-control" id="name" name="name" required formControlName="name">
+            </div>
+            <div class="col">
+              <label for="age">Fecha de nacimiento</label>
+              <div class="input-group">
+                <input id="age" class="form-control" type="date" placeholder="yyyy-mm-dd" required formControlName="age">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required formControlName="email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required formControlName="password">
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="gender">Genero</label>
+              <select id="gender" name="gender" class="form-control" required formControlName="gender">
+                <option value="" disabled selected>Escoje una opción</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="rol">Rol</label>
+              <select id="rol" name="rol" class="form-control" required formControlName="rol">
+                <option value="" disabled selected>Escoje una opción</option>
+                <option value="admin">admin</option>
+                <option value="brigadista">brigadista</option>
+                <option value="usuario">usuario</option>
+              </select>
+            </div>
+          </div>  
+        </div>
+        <div class="form-group">
+          <div class="custom-file">
+            <input type="file" accept="image/*" class="custom-file-input" id="customFile" lang="es" (change)="uploadFile($event, true)">
+            <label class="custom-file-label" for="customFile">Sube una foto</label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline-dark" type="submit" [disabled]="!postForm.valid">Guardar</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" type="submit" [disabled]="!postForm.valid">Guardar</button>
+    </div>
+  </ng-template>
