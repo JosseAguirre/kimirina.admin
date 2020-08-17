@@ -5,6 +5,7 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 import { ToastService } from '../toast/toast.service';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
+declare var $: any;
 
 
 @Component({
@@ -29,6 +30,14 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.filtertext = null;
     this.getUsers();
+
+    // tslint:disable-next-line: only-arrow-functions
+    $(document).ready(function() {
+      // lanzar email en minusculas
+      $('#email, #email2').on('change keyup paste', function() {
+        $(this).val($(this).val().toLowerCase());
+         });
+    });
 
     this.postForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(this.passwordPattern)]],
@@ -85,9 +94,18 @@ export class UserComponent implements OnInit {
   // This is for the first modal
   open1(content1: string) {
     this.modalService.open(content1, {ariaLabelledBy: 'modal-basic-title'}).result.then((_result) => {
-      // this.closeResult = `Closed with: ${result}`;
+      this.postForm.reset();
     }, (_reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.postForm.reset();
+    });
+  }
+
+  open2(content2: string, user: User) {
+    this.userService.selectedUser = user;
+    this.modalService.open(content2, {ariaLabelledBy: 'modal-basic-title'}).result.then((_result) => {
+      this.postForm.reset();
+    }, (_reason) => {
+      this.postForm.reset();
     });
   }
 

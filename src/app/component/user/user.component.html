@@ -28,8 +28,8 @@
         <td>{{user.gender}}</td>
         <td>{{user.rol}}</td>
         <td>
-            <button type="button" class="btn btn-primary btn-sm"><i class="mdi mdi-pencil"></i> Editar</button>
-            <button type="button" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i> Eliminar</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="open2(content2,user)"><i class="mdi mdi-pencil"></i> Editar</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="softDelete(user._id)"><i class="mdi mdi-delete"></i> Eliminar</button>
         </td>
       </tr>
     </tbody>
@@ -46,12 +46,15 @@
       </button>
     </div>
     <div class="modal-body">
-      <form [formGroup]="postForm" (ngSubmit)='postUser()'>
+      <form class="needs-validation" [formGroup]="postForm" (ngSubmit)='postUser()'>
         <div class="form-group">
           <div class="row">
             <div class="col">
               <label for="name">Nombre completo</label>
               <input type="text" class="form-control" id="name" name="name" required formControlName="name">
+              <div class="invalid-feedback">
+                Please choose a username.
+              </div>
             </div>
             <div class="col">
               <label for="age">Fecha de nacimiento</label>
@@ -101,7 +104,71 @@
         <button type="button" class="btn btn-outline-dark" type="submit" [disabled]="!postForm.valid">Guardar</button>
       </form>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" type="submit" [disabled]="!postForm.valid">Guardar</button>
+  </ng-template>
+
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Nuevo usuario</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="putForm" (ngSubmit)='putUser()'>
+        <div class="form-group">
+          <input type="hidden" formControlName="_id" [(ngModel)]="userService.selectedUser._id">
+          <div class="row">
+            <div class="col">
+              <label for="name2">Nombre completo</label>
+              <input type="text" class="form-control" id="name2" name="name2" required formControlName="name" [(ngModel)]="userService.selectedUser.name">
+            </div>
+            <div class="col">
+              <label for="age2">Fecha de nacimiento</label>
+              <div class="input-group">
+                <input id="age2" class="form-control" type="date" placeholder="yyyy-mm-dd" required formControlName="age" [(ngModel)]="userService.selectedUser.age">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email2">Email</label>
+          <input type="email" class="form-control" id="email2" name="email2" aria-describedby="emailHelp" required formControlName="email" [(ngModel)]="userService.selectedUser.email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="password2">Password</label>
+          <input type="password" class="form-control" id="password2" name="password2" required formControlName="password" [(ngModel)]="userService.selectedUser.password">
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="gender2">Genero</label>
+              <select id="gender2" name="gender2" class="form-control" required formControlName="gender" [(ngModel)]="userService.selectedUser.gender">
+                <option value="" disabled selected>Escoje una opción</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="rol2">Rol</label>
+              <select id="rol2" name="rol2" class="form-control" required formControlName="rol" [(ngModel)]="userService.selectedUser.rol">
+                <option value="" disabled selected>Escoje una opción</option>
+                <option value="admin">admin</option>
+                <option value="brigadista">brigadista</option>
+                <option value="usuario">usuario</option>
+              </select>
+            </div>
+          </div>  
+        </div>
+        <div class="form-group">
+          <input type="hidden" formControlName="image" [(ngModel)]="userService.selectedUser.imagen">
+          <div class="custom-file">
+            <input type="file" accept="image/*" class="custom-file-input" id="customFile2" lang="es" (change)="uploadFile($event, false)">
+            <label class="custom-file-label" for="customFile2">Sube una foto</label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline-dark" type="submit" [disabled]="!putForm.valid">Guardar</button>
+      </form>
     </div>
   </ng-template>
