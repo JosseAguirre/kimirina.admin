@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from './../../models/user';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorMessage } from 'ng-bootstrap-form-validation';
 import { ToastService } from '../toast/toast.service';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
@@ -20,9 +21,22 @@ export class UserComponent implements OnInit {
   postForm: FormGroup;
   putForm: FormGroup;
   previewImage: string;
-  submittedForm = false;
   passwordPattern = '(?=\\D*\\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,60}';
   emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$';
+
+  // Error Messages
+  customErrorMessages: ErrorMessage[] = [
+    {
+      error: 'required',
+      format: (label, error) => `${label} Obligatorio!`
+    }, {
+      error: 'pattern',
+      format: (label, error) => `${label} Esto no luce bien...`
+    }, {
+      error: 'minlength',
+      format: (label, error) => `${label} Debe contener al menos 8 caracteres`
+    }
+  ];
 
   constructor(public userService: UserService, private modalService: NgbModal, private formBuilder: FormBuilder,
               public toastService: ToastService) { }
@@ -42,7 +56,7 @@ export class UserComponent implements OnInit {
     this.postForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(this.passwordPattern)]],
       email: ['',  [Validators.required, Validators.pattern(this.emailPattern)]],
-      name: ['', [Validators.required, Validators.minLength(6)]],
+      name: ['', [Validators.required, Validators.minLength(8)]],
       age: ['', Validators.required],
       gender: ['', Validators.required],
       rol: ['', Validators.required],
@@ -103,9 +117,7 @@ export class UserComponent implements OnInit {
   open2(content2: string, user: User) {
     this.userService.selectedUser = user;
     this.modalService.open(content2, {ariaLabelledBy: 'modal-basic-title'}).result.then((_result) => {
-      this.postForm.reset();
     }, (_reason) => {
-      this.postForm.reset();
     });
   }
 
@@ -116,7 +128,6 @@ export class UserComponent implements OnInit {
   }
 
   postUser() {
-    this.submittedForm = true;
     if (this.postForm.invalid) {
       return;
     } else {
@@ -140,16 +151,12 @@ export class UserComponent implements OnInit {
             'success'
           );
           this.modalService.dismissAll();
-        } else {
-          // this.closeModal(true);
         }
       });
-      // this.closeModal(true);
     }
   }
 
   putUser() {
-    this.submittedForm = true;
     if (this.putForm.invalid) {
       return;
     } else {
@@ -184,8 +191,8 @@ export class UserComponent implements OnInit {
     text: 'No podras revertir esta acción!',
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: '#745AF2',
+    cancelButtonColor: '#EF5350',
     confirmButtonText: 'Si, eliminalo!',
     cancelButtonText: 'Cancelar'
   }).then((result) => {

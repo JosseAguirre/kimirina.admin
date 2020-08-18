@@ -42,6 +42,36 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
     },
     {
+        path: '/component/products',
+        title: 'Productos',
+        icon: 'mdi mdi-cart',
+        class: '',
+        label: '',
+        labelClass: '',
+        extralink: false,
+        submenu: []
+    },
+    {
+        path: '/component/news',
+        title: 'Noticias',
+        icon: 'mdi mdi-newspaper',
+        class: '',
+        label: '',
+        labelClass: '',
+        extralink: false,
+        submenu: []
+    },
+    {
+        path: '/component/forms',
+        title: 'Encuestas',
+        icon: 'mdi mdi-book-open',
+        class: '',
+        label: '',
+        labelClass: '',
+        extralink: false,
+        submenu: []
+    },
+    {
         path: '',
         title: 'UI Components',
         icon: '',

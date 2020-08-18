@@ -26,6 +26,10 @@ import { ToastsContainer } from './toast/toast-container';
 import { UserComponent } from './user/user.component';
 
 import { FiltertablePipe } from '../pipes/filtertable.pipe';
+import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
+import { ProductComponent } from './product/product.component';
+import { NewsComponent } from './news/news.component';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   imports: [
@@ -33,7 +37,8 @@ import { FiltertablePipe } from '../pipes/filtertable.pipe';
     RouterModule.forChild(ComponentsRoutes),
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    NgBootstrapFormValidationModule
   ],
   declarations: [
     NgbdpregressbarBasicComponent,
@@ -54,7 +59,10 @@ import { FiltertablePipe } from '../pipes/filtertable.pipe';
     ToastComponent,
     ToastsContainer,
     FiltertablePipe,
-    UserComponent
+    UserComponent,
+    ProductComponent,
+    NewsComponent,
+    FormComponent
   ]
 })
 export class ComponentsModule {}

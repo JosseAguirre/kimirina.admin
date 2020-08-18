@@ -16,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
 
 import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -45,7 +46,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         NgbModule,
         RouterModule.forRoot(Approutes),
         PerfectScrollbarModule,
-        ChartsModule
+        ChartsModule,
+        NgBootstrapFormValidationModule.forRoot()
     ],
     providers: [
         {
