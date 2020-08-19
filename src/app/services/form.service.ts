@@ -9,7 +9,7 @@ import { Form } from './../models/form';
 export class FormService {
 
   selectedForm: Form;
-  forms: Form[];
+  forms: Form[] = [];
   url = '/form';
 
   constructor(private httpClient: HttpClient) {

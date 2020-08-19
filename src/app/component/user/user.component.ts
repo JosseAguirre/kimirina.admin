@@ -3,7 +3,6 @@ import { User } from './../../models/user';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorMessage } from 'ng-bootstrap-form-validation';
-import { ToastService } from '../toast/toast.service';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 declare var $: any;
@@ -38,8 +37,7 @@ export class UserComponent implements OnInit {
     }
   ];
 
-  constructor(public userService: UserService, private modalService: NgbModal, private formBuilder: FormBuilder,
-              public toastService: ToastService) { }
+  constructor(public userService: UserService, private modalService: NgbModal, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.filtertext = null;
