@@ -15,13 +15,13 @@ declare var $: any;
 export class NewsComponent implements OnInit {
 
   page = 1;
-  pageSize = 10;
+  pageSize = 4;
   filtertext: '';
   postForm: FormGroup;
   putForm: FormGroup;
   preview: string;
   submittedForm = false;
-  urlPattern = '^(http|https|ftp)?(://)?(www|ftp)?.?[a-z0-9-]+(.|:)([a-z0-9-]+)+([/?].*)?$';
+  urlPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   // Error Messages
   customErrorMessages: ErrorMessage[] = [
@@ -30,14 +30,14 @@ export class NewsComponent implements OnInit {
       format: (label, error) => `${label} Obligatorio!`
     }, {
       error: 'pattern',
-      format: (label, error) => `${label} Esto no luce bien...`
+      format: (label, error) => `${label} Por favor ingresa una URL valida`
     }, {
       error: 'minlength',
       format: (label, error) => `${label} Debe contener al menos 6 caracteres`
     }
   ];
 
-  constructor(private newsService: NewsService, private formBuilder: FormBuilder, private modalService: NgbModal) { }
+  constructor(public newsService: NewsService, private formBuilder: FormBuilder, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.filtertext = '';
@@ -114,7 +114,7 @@ export class NewsComponent implements OnInit {
     });
   }
 
-  postNovedad() {
+  postNews() {
     if (this.postForm.invalid) {
       return;
     } else {
@@ -131,12 +131,13 @@ export class NewsComponent implements OnInit {
             'Se ha creado exitosamente',
             'success'
           );
+          this.modalService.dismissAll();
         }
       });
     }
   }
 
-  putNovedad() {
+  putNews() {
     if (this.putForm.invalid) {
       return;
     } else {
@@ -161,7 +162,7 @@ export class NewsComponent implements OnInit {
   }
 
    // tslint:disable-next-line: variable-name
-   deleteNovedad(_id: string) {
+   deleteNews(_id: string) {
     Swal.fire({
       title: 'Estas seguro?',
       text: 'No podras revertir esta acción!',

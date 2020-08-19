@@ -9,7 +9,7 @@ import { News } from './../models/news';
 export class NewsService {
 
   selectedNews: News;
-  news: News[];
+  news: News[] = [];
   url = '/news';
 
   constructor(private httpClient: HttpClient) {
@@ -27,7 +27,7 @@ export class NewsService {
     formData.append('link', link);
     formData.append('image', image);
 
-    return this.httpClient.post<News>(environment.API_URL + this.url, formData);
+    return this.httpClient.post<News>(environment.API_URL + this.url, formData, { reportProgress: true, observe: 'events'});
   }
 
   // tslint:disable-next-line: variable-name
