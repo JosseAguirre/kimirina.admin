@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FullComponent } from './layouts/full/full.component';
+import { LoginComponent } from './shared/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const Approutes: Routes = [
     {
@@ -18,7 +20,12 @@ export const Approutes: Routes = [
                 path: 'component',
                 loadChildren: () => import('./component/component.module').then(m => m.ComponentsModule)
             }
-        ]
+        ],
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     },
     {
         path: '**',

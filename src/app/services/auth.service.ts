@@ -12,9 +12,12 @@ export class AuthService {
   login = '/login';
   logout = '/logout';
   acount: User;
+  selectedUser: User;
   isAdmin = null;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.selectedUser = new User();
+  }
 
   loginUser(user: User) {
     return this.httpClient.post(environment.API_URL + this.url + this.login, user);

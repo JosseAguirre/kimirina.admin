@@ -1,87 +1,75 @@
-import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
-import {
-  NgbModal,
-  ModalDismissReasons,
-  NgbPanelChangeEvent,
-  NgbCarouselConfig
-} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal, ModalDismissReasons, NgbPanelChangeEvent, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-//declare var $: any;
+import { AuthService } from '../../services/auth.service';
+
+
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html'
 })
-export class NavigationComponent implements AfterViewInit {
+
+
+export class NavigationComponent implements OnInit {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   public config: PerfectScrollbarConfigInterface = {};
-  constructor(private modalService: NgbModal) {}
 
-  public showSearch = false;
+  constructor(private modalService: NgbModal, private authService: AuthService, private router: Router) {}
 
-  // This is for Notifications
-  notifications: Object[] = [
-    {
-      round: 'round-danger',
-      icon: 'ti-link',
-      title: 'Luanch Admin',
-      subject: 'Just see the my new admin!',
-      time: '9:30 AM'
-    },
-    {
-      round: 'round-success',
-      icon: 'ti-calendar',
-      title: 'Event today',
-      subject: 'Just a reminder that you have event',
-      time: '9:10 AM'
-    },
-    {
-      round: 'round-info',
-      icon: 'ti-settings',
-      title: 'Settings',
-      subject: 'You can customize this template as you want',
-      time: '9:08 AM'
-    },
-    {
-      round: 'round-primary',
-      icon: 'ti-user',
-      title: 'Pavan kumar',
-      subject: 'Just see the my admin!',
-      time: '9:00 AM'
+  isLogged = false;
+  userObject = null;
+
+  ngOnInit(): void {
+    this.isLoggedIn();
+  }
+
+  isLoggedIn() {
+    const loggedUser = localStorage.getItem('loggedUser');
+    this.userObject = JSON.parse(loggedUser);
+    console.log(this.userObject);
+
+    if (loggedUser == null) {
+      this.isLogged = false;
+      this.router.navigateByUrl('/login');
+    } else {
+      this.isLogged = true;
+      this.inactivityTime();
     }
-  ];
+  }
 
-  // This is for Mymessages
-  mymessages: Object[] = [
-    {
-      useravatar: 'assets/images/users/1.jpg',
-      status: 'online',
-      from: 'Pavan kumar',
-      subject: 'Just see the my admin!',
-      time: '9:30 AM'
-    },
-    {
-      useravatar: 'assets/images/users/2.jpg',
-      status: 'busy',
-      from: 'Sonu Nigam',
-      subject: 'I have sung a song! See you at',
-      time: '9:10 AM'
-    },
-    {
-      useravatar: 'assets/images/users/2.jpg',
-      status: 'away',
-      from: 'Arijit Sinh',
-      subject: 'I am a singer!',
-      time: '9:08 AM'
-    },
-    {
-      useravatar: 'assets/images/users/4.jpg',
-      status: 'offline',
-      from: 'Pavan kumar',
-      subject: 'Just see the my admin!',
-      time: '9:00 AM'
+  logoutUser() {
+    const userJson = localStorage.getItem('loggedUser');
+    const userObject = JSON.parse(userJson);
+    const env = { id: userObject._id };
+    console.log(env.id);
+    this.authService.logOutUser(env).subscribe(res => {
+      // tslint:disable-next-line: no-string-literal
+      if (res["status"] == 200) {
+        localStorage.clear();
+        this.router.navigateByUrl('/login');
+      }
+    });
+  }
+
+  inactivityTime() {
+    let time;
+
+    window.onload = resetTimer;
+
+    // DOM events
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+
+    function resetTimer() {
+      clearTimeout(time);
+      time = setTimeout(timeOut, 6000000);
     }
-  ];
 
-  ngAfterViewInit() {}
+    function timeOut() {
+      localStorage.clear();
+      window.location.reload();
+    }
+  }
 }

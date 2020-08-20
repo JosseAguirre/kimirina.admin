@@ -6,11 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ComponentsRoutes } from './component.routing';
-import { NgbdCarouselBasicComponent } from './carousel/carousel.component';
-import { NgbdModalBasicComponent } from './modal/modal.component';
-import { NgbdtypeheadBasicComponent } from './typehead/typehead.component';
-import { ButtonsComponent } from './buttons/buttons.component';
-import { CardsComponent } from './card/card.component';
 import { UserComponent } from './user/user.component';
 
 import { FiltertablePipe } from '../pipes/filtertable.pipe';
@@ -29,11 +24,6 @@ import { FormComponent } from './form/form.component';
     NgBootstrapFormValidationModule
   ],
   declarations: [
-    NgbdCarouselBasicComponent,
-    NgbdModalBasicComponent,
-    NgbdtypeheadBasicComponent,
-    ButtonsComponent,
-    CardsComponent,
     FiltertablePipe,
     UserComponent,
     ProductComponent,
